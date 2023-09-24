@@ -146,6 +146,7 @@ class Combat:
         master_list = []
         self.health_anim_cooldown += 2
         x_gap = 0
+        right_gap = 146
 
         for idx, entity in enumerate(self.characters):
             if idx >= len(self.party):
@@ -157,8 +158,8 @@ class Combat:
             x_hp, y_hp = (x_gap + 17, 122 + 122 * idx - 2 * idx)
 
             hp_container = pygame.Rect(x_container, y_container, 150, 25)
-            hp_width  = (entity.hp / entity.max_hp) * 145
-            prev_hp_width = (entity.prev_hp / entity.max_hp) * 145
+            hp_width  = (entity.hp / entity.max_hp) * right_gap
+            prev_hp_width = (entity.prev_hp / entity.max_hp) * right_gap
 
             hp_prev_rect = pygame.Rect(x_hp, y_hp, prev_hp_width, 21)
 

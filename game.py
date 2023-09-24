@@ -1,5 +1,4 @@
 import pygame
-import pygame_gui
 from player import Player
 from map import Map
 from menu import Menu
