@@ -1,0 +1,9 @@
+rcs/rdm
+testrandom.py
+combatv2.py
+main.py
+__pycache__
+rcs/characters/Goblin/tiles
+rcs/characters/Sworcerer/tiles
+rcs/characters/Wolf/tiles
+rcs/characters/Fireskull/tiles
