@@ -20,21 +20,21 @@ class Map:
                 "description": "C'est la première ville.",
                 "population": 1000,
                 "position": (random.randint(0, 800), random.randint(0, 600)),  # (x, y) coordinates
-                "image": "rcs/tile009.png"
+                "image": "rcs/Map/tile009.png"
             },
             {
                 "name": "Ville 2",
                 "description": "Une ville en bord de mer.",
                 "population": 1500,
                 "position": (random.randint(0, 800), random.randint(0, 600)),  # (x, y) coordinates
-                "image": "rcs/tile007.png"
+                "image": "rcs/Map/tile007.png"
             },
             {
                 "name": "Ville 3",
                 "description": "La capitale du royaume.",
                 "population": 3000,
                 "position": (random.randint(0, 800), random.randint(0, 600)),  # (x, y) coordinates
-                "image": "rcs/tile008.png"
+                "image": "rcs/Map/tile008.png"
             },
         ]
 
@@ -43,13 +43,13 @@ class Map:
                 "name": "Point of Interest 1",
                 "description": "Un endroit intéressant.",
                 "position": (random.randint(0, 800), random.randint(0, 600)),  # (x, y) coordinates
-                "image": "rcs/tile010.png"
+                "image": "rcs/map/tile010.png"
             },
             {
                 "name": "Point of Interest 2",
                 "description": "Un autre endroit intéressant.",
                 "position": (random.randint(0, 800), random.randint(0, 600)),  # (x, y) coordinates
-                "image": "rcs/tile011.png"
+                "image": "rcs/map/tile011.png"
             },
         ]
 
