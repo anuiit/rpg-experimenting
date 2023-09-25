@@ -9,7 +9,7 @@ width = 1280
 height = 720
 
 class Combat:
-    def __init__(self, players, enemies, player_turn=True): # ajouter enemies plus tard (liste d'ennemis)
+    def __init__(self, players, enemies, player_turn=True, background='battleback8'): # ajouter enemies plus tard (liste d'ennemis)
         self.next_state = None
         self.running = True
         self.selected_entity = None
@@ -34,7 +34,7 @@ class Combat:
         self.map_window_height = height - self.map_reduce_height
         self.map_window_rect = pygame.Rect(180, 40, self.map_window_width, self.map_window_height )
 
-        self.background = pygame.image.load("rcs/backgrounds/battleback8.png")
+        self.background = pygame.image.load(f"rcs/backgrounds/{background}.png")
         self.background = pygame.transform.scale(self.background, (self.map_window_width, self.map_window_height))
 
         self.buttonsList = [Button(50, 650, pygame.image.load("rcs/ui/btn_map_inactive.png"), pygame.image.load("rcs/ui/btn_map_active.png"), 5, "Attack"),
@@ -43,8 +43,7 @@ class Combat:
 
         self.menu = Button.reposition_horizontal_menu(self.buttonsList, (self.map_window_rect.width // len(self.buttonsList) - self.buttonsList[0].rect.width // 2), 550, 200, scale=5)
 
-        self.characters_positions = self.calc_pos2()
-
+        self.characters_positions = self.calculate_characters_positions()
 
     def handle_events(self, event):
         # Gérez les événements liés au combat ici, tels que les actions du joueur (attaquer, utiliser une compétence, etc.).
@@ -78,8 +77,7 @@ class Combat:
         elif event.type == pygame.QUIT:
             pygame.quit()
 
-    def calc_pos2(self):
-        # Calculate positions for players or enemies based on the 'is_player' parameter
+    def calculate_characters_positions(self):
         available_width = self.map_window_width // 2
         available_height = self.map_reduce_height // 2
 
@@ -102,7 +100,11 @@ class Combat:
 
             calc = slot_width * 1.5 - slot_width * gen_idx
             
-            if idx >= len(self.party) // 2 and entity in self.party:
+            # TODO 
+            # Utiliser modulo
+            # parce que la c'est pas top 
+            # si il y a 2 player le deuxieme se retrouve derriere et pas en dessous
+            if idx >= len(self.party) / 2 and entity in self.party:
                 gen_idx = temp_idx_party
                 line_gap_x = (-160)
                 line_gap_y = 14
@@ -134,7 +136,6 @@ class Combat:
 
         return [(x, y) for x, y in zip(x_positions, y_positions)]
 
-
     def render_characters(self, screen):
         for idx, entity in enumerate(self.characters):
             x, y = self.characters_positions[idx]
@@ -159,34 +160,34 @@ class Combat:
 
             hp_container = pygame.Rect(x_container, y_container, 150, 25)
             hp_width  = (entity.hp / entity.max_hp) * right_gap
-            prev_hp_width = (entity.prev_hp / entity.max_hp) * right_gap
 
-            hp_prev_rect = pygame.Rect(x_hp, y_hp, prev_hp_width, 21)
+            prev_hp_width = (entity.prev_hp / entity.max_hp) * right_gap
+            prev_hp_rect = pygame.Rect(x_hp, y_hp, prev_hp_width, 21)
 
             print(f'hp : {hp_width}, prev_hp {prev_hp_width}')
 
-            # Animate the health bar by gradually shrinking it
             if entity.hp < entity.prev_hp and self.health_anim_cooldown >= self.health_max_anim_cooldown:
                 entity.prev_hp -= 1
                 self.health_anim_cooldown = 0
                 self.action_cooldown = 0
 
-            master_list.append([hp_container, hp_prev_rect])
+            master_list.append([hp_container, prev_hp_rect])
 
         return master_list
 
     def draw_ui(self, screen):
         pygame.draw.rect(screen, (255, 255, 255), self.map_window_rect, 2)
 
-        hb_positions = self.health_bars_pos()
-
-        for idx, bar in enumerate(hb_positions):
+        for idx, bar in enumerate(self.health_bars_pos()):
             render_text(screen, self.characters[idx].name, (bar[0].x, bar[0].y - 30))
             render_text(screen, str(self.characters[idx].hp), (bar[0].bottomright[0] - 30, bar[0].y - 30))
 
             pygame.draw.rect(screen, (222, 222, 222), bar[0], 0)
             pygame.draw.rect(screen, (0, 0, 0), bar[1], 0)
 
+        # TODO 
+        # Group buttons ?
+        # pygame.group.draw(groupbuttons) ?
         for button in self.buttonsList:
             if self.player_turn:
                 button.draw(screen, True)
@@ -238,7 +239,6 @@ class Combat:
         print('current fighter: ' + str(self.current_fighter))
         print(f'action_cooldown : {self.action_cooldown} / {self.action_wait_time}')
 
-
     def render(self, screen):
         while self.running:
             screen.fill((20, 20, 20))
@@ -269,7 +269,7 @@ class Combat:
             print("You have been defeated!")
             self.running = False
             self.next_state = "menu"
-    
+
     def end_screen():
         pass
 
